@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Bevapors X City Clouds | Premium Vape Shop</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ----- RESET + GLOBAL ----- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* Palette tuned to pastel-rainbow bg with strong contrast */
+        :root {
+            --primary: #8a2be2;          /* electric purple accent */
+            --primary-dark: #6a0dad;
+            --text-strong: #ffffff;
+            --text-muted: #e9e9f3;
+            --overlay-90: rgba(8, 10, 22, 0.90);
+            --overlay-75: rgba(8, 10, 22, 0.75);
+            --overlay-65: rgba(8, 10, 22, 0.65);
+            --card: rgba(10, 12, 20, 0.72);
+            --card-strong: rgba(6, 8, 18, 0.86);
+            --line: rgba(255, 255, 255, 0.12);
+        }
+
+        /* FIXED HEIGHT: viewport-based layout that prevents scroll */
+        html, body {
+            height: 100%;
+            width: 100%;
+            overflow: hidden;        /* no global scrolling — everything fits inside */
+        }
+
+        body {
+            color: var(--text-strong);
+            background-image: linear-gradient(180deg, rgba(6,8,18,0.55), rgba(6,8,18,0.55)), url("images/bg.jpg");
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        /* main container that uses flex to fill remaining space without overflow */
+        .app-wrapper {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        /* ----- HEADER (with side margins & balanced spacing) ----- */
+        header {
+            background: var(--overlay-90);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            border-bottom: 1px solid var(--line);
+            width: 100%;
+            flex-shrink: 0;           /* prevents shrinking */
+        }
+
+        .header-container {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 12px 30px;       /* left/right margin (30px) to maximize page but keep breathing room */
+        }
+
+        /* responsive: smaller screens get reduced side padding but still balanced */
+        @media (max-width: 768px) {
+            .header-container {
+                padding: 12px 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header-container {
+                padding: 10px 16px;
+            }
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--text-strong);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            letter-spacing: 0.3px;
+        }
+
+        .logo span {
+            color: var(--primary);
+        }
+
+        .logo-icon {
+            margin-right: 12px;
+            width: 52px;
+            height: 52px;
+            object-fit: contain;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 26px;
+        }
+
+        nav ul li a {
+            color: var(--text-strong);
+            text-decoration: none;
+            font-weight: 600;
+            position: relative;
+            padding-bottom: 4px;
+        }
+
+        nav ul li a:hover {
+            color: #f8f6ff;
+        }
+
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            height: 2px;
+            width: 0;
+            background: linear-gradient(90deg, var(--primary), #b07cff);
+            transition: width 0.25s ease;
+        }
+
+        nav ul li a:hover::after {
+            width: 100%;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-strong);
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        /* ----- HERO SECTION: FITS WITHOUT SCROLL ----- */
+        .hero {
+            flex: 1;                  /* takes remaining space, no overflow */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            width: 100%;
+            min-height: 0;            /* avoid flex overflow */
+            overflow-y: auto;         /* optional: allows tiny adjustment if content too tall, but content fits */
+        }
+
+        /* custom scroll inside hero only if needed — but all content visible */
+        .hero::-webkit-scrollbar {
+            width: 4px;
+            background: transparent;
+        }
+
+        .hero::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.3);
+            border-radius: 20px;
+        }
+
+        /* Soft vignette for readability */
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(70% 60% at 50% 45%, transparent 0%, transparent 55%, rgba(6, 8, 18, 0.35) 100%);
+            pointer-events: none;
+        }
+
+        .hero-content {
+            text-align: center;
+            z-index: 2;
+            position: relative;
+            width: 100%;
+            max-width: 900px;
+            padding: 20px 24px 30px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: clamp(2rem, 4vw, 3.6rem);
+            margin-bottom: 16px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-shadow: 0 2px 12px rgba(0, 0, 0, 0.45);
+        }
+
+        .hero h1 span {
+            color: #d7c0ff;
+            text-shadow: 0 1px 10px rgba(138, 43, 226, 0.45);
+        }
+
+        .hero p {
+            font-size: clamp(1rem, 1.8vw, 1.2rem);
+            max-width: 680px;
+            margin: 0 auto 28px;
+            line-height: 1.65;
+            color: var(--text-muted);
+        }
+
+        .order-btn {
+            display: inline-block;
+            padding: 14px 38px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: #fff;
+            font-size: 1.1rem;
+            font-weight: 800;
+            text-decoration: none;
+            border-radius: 40px;
+            box-shadow: 0 10px 28px rgba(138, 43, 226, 0.35);
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+
+        .order-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 14px 34px rgba(138, 43, 226, 0.5);
+        }
+
+        /* ----- DECORATIVE CLOUDS (keep visible but less intrusive) ----- */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-12px); }
+        }
+
+        .cloud {
+            position: absolute;
+            opacity: 0.32;
+            z-index: 1;
+            color: #ffffff;
+            filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.25));
+            animation: float 14s infinite ease-in-out;
+            pointer-events: none;
+        }
+
+        .cloud:nth-child(1) { top: 12%; left: 4%; font-size: 100px; animation-delay: 0s; }
+        .cloud:nth-child(2) { top: 24%; right: 6%; font-size: 130px; animation-delay: 1.5s; }
+        .cloud:nth-child(3) { bottom: 18%; left: 8%; font-size: 110px; animation-delay: 3s; }
+        .cloud:nth-child(4) { bottom: 12%; right: 5%; font-size: 95px; animation-delay: 5s; }
+
+        /* ---------- FOOTER (always visible, no scrolling needed) ---------- */
+        footer {
+            background: var(--overlay-75);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            border-top: 1px solid var(--line);
+            width: 100%;
+            flex-shrink: 0;
+            margin-top: 0;
+        }
+
+        .footer-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 14px 30px;
+        }
+
+        @media (max-width: 768px) {
+            .footer-container {
+                padding: 12px 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .footer-container {
+                padding: 10px 16px;
+            }
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .copyright {
+            color: #ffffff;
+            opacity: 0.92;
+            font-size: 0.9rem;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 12px;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 38px;
+            height: 38px;
+            background: rgba(255, 255, 255, 0.14);
+            border: 1px solid var(--line);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 50%;
+            transition: transform 0.2s ease, background 0.2s ease;
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
+        }
+
+        .social-links a:hover {
+            transform: translateY(-2px);
+            background: linear-gradient(135deg, #d7c0ff, #9b79ff);
+        }
+
+        /* ----- ensure no overflow on any breakpoints ----- */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-wrap: wrap;
+            }
+            nav {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: var(--overlay-90);
+                padding: 18px 0;
+                border-bottom: 1px solid var(--line);
+                z-index: 1001;
+            }
+            nav.active {
+                display: block;
+            }
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+            nav ul li {
+                margin: 10px 0;
+            }
+            .mobile-menu-btn {
+                display: block;
+            }
+            .logo-icon {
+                width: 46px;
+                height: 46px;
+            }
+            .logo {
+                font-size: 22px;
+            }
+            .hero-content {
+                padding: 10px 16px 20px;
+            }
+            .hero h1 {
+                font-size: 1.9rem;
+            }
+            .order-btn {
+                padding: 12px 30px;
+                font-size: 1rem;
+            }
+            .cloud {
+                opacity: 0.2;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 1.75rem;
+                margin-bottom: 10px;
+            }
+            .hero p {
+                font-size: 0.9rem;
+                margin-bottom: 20px;
+            }
+            .logo {
+                font-size: 18px;
+            }
+            .logo-icon {
+                width: 38px;
+                height: 38px;
+            }
+            .cloud {
+                display: none; /* cleaner on smallest screens */
+            }
+            .footer-content {
+                flex-direction: column;
+                text-align: center;
+                gap: 8px;
+            }
+        }
+
+        /* make sure hero inner doesn't cause scroll: max height fit */
+        @media (max-height: 620px) {
+            .hero h1 {
+                margin-bottom: 8px;
+            }
+            .hero p {
+                margin-bottom: 16px;
+            }
+            .order-btn {
+                padding: 10px 28px;
+            }
+            .hero-content {
+                padding: 12px 20px 18px;
+            }
+            .cloud {
+                opacity: 0.15;
+            }
+        }
+
+        /* smooth adjustments for very small heights */
+        @media (max-height: 550px) {
+            .logo-icon {
+                width: 40px;
+                height: 40px;
+            }
+            header .header-container {
+                padding: 8px 30px;
+            }
+            .hero {
+                align-items: center;
+            }
+        }
+
+        /* any remaining scroll prevention: body lock */
+        body {
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+<div class="app-wrapper">
+    <!-- Header with left/right margins (30px on desktop) to maximize page but keep elegance -->
+    <header>
+        <div class="header-container">
+            <div class="header-content">
+                <a href="#" class="logo">
+                    City Clouds <span>X</span> Bevapors
+                </a>
+                <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <nav id="mainNav">
+                    <ul style="justify-content: center;">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="mechanics.html">Mechanics</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero section - fits entirely without scrolling -->
+    <section class="hero">
+        <!-- decorative cloud icons (soft) -->
+        <div class="cloud"><i class="fas fa-cloud"></i></div>
+        <div class="cloud"><i class="fas fa-cloud"></i></div>
+        <div class="cloud"><i class="fas fa-cloud"></i></div>
+        <div class="cloud"><i class="fas fa-cloud"></i></div>
+
+        <div class="hero-content">
+            <h1>Welcome To City Clouds X Bevapors <span>Loyalty Card</span></h1>
+            <p>Discover premium quality vape products, exotic flavors, and cutting‑edge technology for the ultimate cloud‑chasing experience.</p>
+            <a href="card-search.html" class="order-btn">Check My Points</a>
+        </div>
+    </section>
+
+    <!-- Footer always visible, no scroll required -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="copyright">
+                    <p>&copy; 2022 City Clouds X Bevapors. All rights reserved. For adults 18+ only.</p>
+                </div>
+                <div class="social-links">
+                    <a target="_blank" href="https://www.facebook.com/citycloudsxbevapors" rel="noopener noreferrer"><i class="fab fa-facebook-f"></i></a>
+
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>
+
+<script>
+    (function() {
+        // Mobile menu toggle with correct icon swap & closing after link click
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mainNav = document.getElementById('mainNav');
+
+        if (mobileMenuBtn && mainNav) {
+            mobileMenuBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                mainNav.classList.toggle('active');
+                const icon = mobileMenuBtn.querySelector('i');
+                if (mainNav.classList.contains('active')) {
+                    icon.className = 'fas fa-times';
+                } else {
+                    icon.className = 'fas fa-bars';
+                }
+            });
+
+            // Close navigation when any nav link is clicked (smooth mobile behavior)
+            const navLinks = document.querySelectorAll('#mainNav a');
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (mainNav.classList.contains('active')) {
+                        mainNav.classList.remove('active');
+                        const icon = mobileMenuBtn.querySelector('i');
+                        if (icon) icon.className = 'fas fa-bars';
+                    }
+                });
+            });
+
+            // optional: click outside closes menu? good UX but not mandatory for scope. 
+            // but adds robustness
+            document.addEventListener('click', function(event) {
+                if (!mainNav.contains(event.target) && !mobileMenuBtn.contains(event.target) && mainNav.classList.contains('active')) {
+                    mainNav.classList.remove('active');
+                    const icon = mobileMenuBtn.querySelector('i');
+                    if (icon) icon.className = 'fas fa-bars';
+                }
+            });
+        }
+
+        // Order button hover micro-interaction (clean)
+        const orderBtn = document.querySelector('.order-btn');
+        if (orderBtn) {
+            orderBtn.addEventListener('mouseenter', function() { this.style.transform = 'translateY(-3px)'; });
+            orderBtn.addEventListener('mouseleave', function() { this.style.transform = 'translateY(0)'; });
+            // ensure tap doesn't stick transform on mobile
+            orderBtn.addEventListener('touchstart', function() { this.style.transform = 'translateY(-2px)'; });
+            orderBtn.addEventListener('touchend', function() { this.style.transform = 'translateY(0)'; });
+        }
+
+        // prevent any accidental body scroll via touchmove on hero if needed
+        // but our layout is fixed; no global scroll. the hero itself can have overflow:auto only if needed
+        // but content fits without issues. fine.
+        const heroSection = document.querySelector('.hero');
+        if (heroSection) {
+            // ensure that if some content overflows (unlikely) user can slightly scroll but no big deal
+            // this keeps visible without main scroll. all good.
+            heroSection.addEventListener('wheel', (e) => {
+                // allow natural scroll only inside hero if needed but no conflict
+                // no extra action
+            });
+        }
+    })();
+</script>
+</body>
+</html>
